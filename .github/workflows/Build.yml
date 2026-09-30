@@ -1,29 +1,24 @@
 name: Build
 
 on:
-  push:
-    tags: "*"
-
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-
   build:
-
     strategy:
       matrix:
         configuration: [Release]
         targetPlatform: [x64]
 
     runs-on: windows-latest
-               
-    
     env:
       Scripts_Path: TinyInstaller\Scripts
       Solution_Path: TinyInstaller\TinyInstaller.sln
       Release_Zip: TinyInstaller\TinyInstaller\bin\Release\net6.0-windows7.0\win-x64\TinyInstaller.zip
+      
     steps:
      - name: Checkout
        uses: actions/checkout@main
