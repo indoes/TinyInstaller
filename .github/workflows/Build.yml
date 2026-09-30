@@ -2,9 +2,8 @@ name: Build
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    tags: "*"
+
 
 permissions:
   contents: write
@@ -27,7 +26,7 @@ jobs:
       Release_Zip: TinyInstaller\TinyInstaller\bin\Release\net6.0-windows7.0\win-x64\TinyInstaller.zip
     steps:
      - name: Checkout
-       uses: actions/checkout@v2
+       uses: actions/checkout@main
        with:
          fetch-depth: 0
 
@@ -38,17 +37,22 @@ jobs:
       #       10.0.x
       #       11.0.x
 
-     - name: install-dotnet
-       uses: WeihanLi/dotnet-install@v0.2.0
-       with:
-         version: 7.0.x
+    # - name: install-dotnet
+    #   uses: WeihanLi/dotnet-install@v0.2.0
+    #   with:
+    #     version: 7.0.x
+
+     - name: Install .NET
+      uses: actions/setup-dotnet@main
+      with:
+        dotnet-version: 6.x.x
 
      - name: Display .NET info
        run: dotnet --info
 
      # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
      - name: Setup MSBuild.exe
-       uses: microsoft/setup-msbuild@v2
+       uses: microsoft/setup-msbuild@master
 
      - name: Restore dependencies
        run: dotnet restore "$env:Solution_Path"
